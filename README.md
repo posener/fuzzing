@@ -1,6 +1,6 @@
 # fuzzing
 
-Package fuzzing enables easy fuzzing with go-fuzz ([https://github.com/dvyukov/go-fuzz](https://github.com/dvyukov/go-fuzz)).
+Package fuzzing enables easy fuzzing with [go-fuzz](https://github.com/dvyukov/go-fuzz).
 
 The `Fuzz` object provides functions for generating consistent Go primitive values from a fuzzed
 a given bytes slice. The generated values are promised to be consistent from identical slices.
