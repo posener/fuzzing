@@ -1,5 +1,10 @@
 # fuzzing
 
+[![Build Status](https://travis-ci.org/posener/fuzzing.svg?branch=master)](https://travis-ci.org/posener/fuzzing)
+[![codecov](https://codecov.io/gh/posener/fuzzing/branch/master/graph/badge.svg)](https://codecov.io/gh/posener/fuzzing)
+[![GoDoc](https://godoc.org/github.com/posener/fuzzing?status.svg)](http://godoc.org/github.com/posener/fuzzing)
+[![goreadme](https://goreadme.herokuapp.com/badge/posener/fuzzing.svg)](https://goreadme.herokuapp.com)
+
 Package fuzzing enables easy fuzzing with [go-fuzz](https://github.com/dvyukov/go-fuzz).
 
 The `Fuzz` object provides functions for generating consistent Go primitive values from a given
