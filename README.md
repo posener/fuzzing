@@ -15,9 +15,9 @@ For an example on how to use this library with go-fuzz, see [./example_fuzz.go](
 In order to test the example, run in the project directory:
 
 ```go
-    $ go get -u github.com/dvyukov/go-fuzz/go-fuzz github.com/dvyukov/go-fuzz/go-fuzz-build
-    $ go-fuzz-build
-    $ go-fuzz -testoutput
+$ go get -u github.com/dvyukov/go-fuzz/go-fuzz github.com/dvyukov/go-fuzz/go-fuzz-build
+$ go-fuzz-build
+$ go-fuzz -testoutput
 ```
 
 #### Examples
