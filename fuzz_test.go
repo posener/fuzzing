@@ -149,6 +149,6 @@ func TestFuzzString(t *testing.T) {
 	assert.Equal(t, "R", f.String(1))
 }
 
-func TestNewPanics(t *testing.T) {
-	assert.Panics(t, func() { New(nil) })
+func TestNewEmpty(t *testing.T) {
+	assert.Equal(t, New(nil).Int(), 113994904454036672)
 }

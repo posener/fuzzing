@@ -32,11 +32,13 @@ type Fuzz struct {
 	fallback *bufio.Reader
 }
 
-// New returns a Fuzz.
+// New returns a Fuzz (see Fuzz definition).
+//
+// This function consumes that first 8 bytes and convert them to a uint64 for a random seed for
+// pseudo random generator, the rest of the data is consumed as input to generate the fuzzed
+// objects. When all the data is consumed, the created pseudo random generator is used to generate
+// the fuzzed objects.
 func New(data []byte) *Fuzz {
-	if len(data) <= 0 {
-		panic("data must be non empty bytes")
-	}
 	reader := bytes.NewReader(data)
 
 	var source [8]byte
