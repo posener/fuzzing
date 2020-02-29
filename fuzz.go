@@ -13,6 +13,7 @@
 package fuzzing
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/binary"
 	"io"
@@ -24,8 +25,11 @@ import (
 // a identical slices. They are also correlated to the given fuzzed slice to enable fuzzing
 // exploration.
 type Fuzz struct {
-	reader   *bytes.Reader
-	fallback *rand.Rand
+	// reader reads bytes from the 9th byte of the input.
+	reader *bytes.Reader
+	// fallback is a buffered reader from a random source that is created from the first 8 bytes of
+	// the input as a seed.
+	fallback *bufio.Reader
 }
 
 // New returns a Fuzz.
@@ -44,11 +48,12 @@ func New(data []byte) *Fuzz {
 
 	return &Fuzz{
 		reader:   reader,
-		fallback: rand.New(rand.NewSource(seed)),
+		fallback: bufio.NewReader(rand.New(rand.NewSource(seed))),
 	}
 }
 
-// Read reads from source. If the source was exhausted, it reads from the random fallback.
+// Read reads from source. If the source was exhausted, it reads from the random fallback. The
+// returned error should always be nil.
 func (f *Fuzz) Read(b []byte) (int, error) {
 	// Try reading from the byte source.
 	n, err := f.reader.Read(b)
@@ -116,4 +121,33 @@ func (f *Fuzz) Int() int {
 // Bool consumes one byte and converts it to a boolean value.
 func (f *Fuzz) Bool() bool {
 	return f.Bytes(1)[0]&1 == 1
+}
+
+// ReadRune consumes a single rune. The returned error should always be nil.
+func (f *Fuzz) ReadRune() (r rune, size int, err error) {
+	// Try reading rune from the byte source.
+	r, size, err = f.reader.ReadRune()
+	if err == io.EOF {
+		// If input bytes was exhausted, return from the random reader.
+		return f.fallback.ReadRune()
+	}
+	return
+}
+
+// Rune is a convenience method around ReadRune.
+func (f *Fuzz) Rune() rune {
+	r, _, err := f.ReadRune()
+	if err != nil {
+		panic(err) // Should not happen.
+	}
+	return r
+}
+
+// String consumes n runes and return them as a string.
+func (f *Fuzz) String(n int) string {
+	runes := make([]rune, n)
+	for i := 0; i < n; i++ {
+		runes[i] = f.Rune()
+	}
+	return string(runes)
 }
