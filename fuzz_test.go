@@ -39,7 +39,7 @@ func TestFuzzRead(t *testing.T) {
 	// 10th byte.
 	assert.Equal(t, []byte{10}, f.Bytes(1))
 	// From seed.
-	assert.Equal(t, []byte{82}, f.Bytes(1)) // From rand source.
+	assert.Equal(t, []byte{82}, f.Bytes(1))
 }
 
 func TestFuzzRead_combine(t *testing.T) {
@@ -64,6 +64,7 @@ func TestFuncs(t *testing.T) {
 		wantInt31  int32
 		wantUint32 uint32
 		wantBool   bool
+		wantRune   rune
 	}{
 		{
 			data:       []byte{0, 0, 0, 0, 0, 0, 0, 1},
@@ -76,6 +77,7 @@ func TestFuncs(t *testing.T) {
 			wantInt31:  0,
 			wantUint32: 0,
 			wantBool:   false,
+			wantRune:   '\x00',
 		},
 		{
 			data:       []byte{0, 0, 0, 0, 0, 0, 2, 3},
@@ -88,6 +90,7 @@ func TestFuncs(t *testing.T) {
 			wantInt31:  0,
 			wantUint32: 0,
 			wantBool:   false,
+			wantRune:   '\x00',
 		},
 		{
 			data:       []byte{255, 255, 255, 255, 255, 255, 255, 255},
@@ -100,6 +103,7 @@ func TestFuncs(t *testing.T) {
 			wantInt31:  0x7fffffff,
 			wantUint32: 0xffffffff,
 			wantBool:   true,
+			wantRune:   '�',
 		},
 		{
 			data:       nil,
@@ -112,6 +116,7 @@ func TestFuncs(t *testing.T) {
 			wantInt31:  696188419,
 			wantUint32: 1392376839,
 			wantBool:   false,
+			wantRune:   'R',
 		},
 	}
 
@@ -126,8 +131,22 @@ func TestFuncs(t *testing.T) {
 			assert.Equal(t, tt.wantInt31, new(tt.data...).Int31(), "int31")
 			assert.Equal(t, tt.wantUint32, new(tt.data...).Uint32(), "uint32")
 			assert.Equal(t, tt.wantBool, new(tt.data...).Bool(), "bool")
+			assert.Equal(t, tt.wantRune, new(tt.data...).Rune(), "rune")
 		})
 	}
+}
+
+func TestFuzzString(t *testing.T) {
+	t.Parallel()
+
+	f := new('a', 'b', 'c')
+
+	// 9th byte as a rune.
+	assert.Equal(t, "a", f.String(1))
+	// 10th, 11th bytes as runes.
+	assert.Equal(t, "bc", f.String(2))
+	// From seed.
+	assert.Equal(t, "R", f.String(1))
 }
 
 func TestNewPanics(t *testing.T) {
