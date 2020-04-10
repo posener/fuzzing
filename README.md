@@ -1,9 +1,7 @@
 # fuzzing
 
-[![Build Status](https://travis-ci.org/posener/fuzzing.svg?branch=master)](https://travis-ci.org/posener/fuzzing)
 [![codecov](https://codecov.io/gh/posener/fuzzing/branch/master/graph/badge.svg)](https://codecov.io/gh/posener/fuzzing)
-[![GoDoc](https://godoc.org/github.com/posener/fuzzing?status.svg)](http://godoc.org/github.com/posener/fuzzing)
-[![goreadme](https://goreadme.herokuapp.com/badge/posener/fuzzing.svg)](https://goreadme.herokuapp.com)
+[![GoDoc](https://img.shields.io/badge/pkg.go.dev-doc-blue)](http://pkg.go.dev/github.com/posener/fuzzing)
 
 Package fuzzing enables easy fuzzing with [go-fuzz](https://github.com/dvyukov/go-fuzz).
 
@@ -20,7 +18,7 @@ $ go-fuzz-build
 $ go-fuzz -testoutput
 ```
 
-#### Examples
+## Examples
 
 ```golang
 f := New([]byte{1, 2, 3})
@@ -32,10 +30,7 @@ fmt.Println(i)
 
 ```
 3851489450890114710
-
 ```
 
-
 ---
-
-Created by [goreadme](https://github.com/apps/goreadme)
+Readme created from Go doc with [goreadme](https://github.com/posener/goreadme)
